@@ -1,0 +1,16 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdftex 2010.7.29)  29 JUL 2010 15:47
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**refman.tex
+(./refman.tex
+! Undefined control sequence.
+l.1 \documentclass
+                  [a4paper]{book}
+? 
+! Emergency stop.
+l.1 \documentclass
+                  [a4paper]{book}
+End of file on the terminal!
+
+!  ==> Fatal error occurred, no output PDF file produced!

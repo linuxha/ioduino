@@ -9,6 +9,7 @@ int main(int argc, char ** argv) {
 		IOduino my_io;
 		if(my_io.isConnected()) {
 			cout << "Connected to IOduino!" << endl;
+			my_io.pinMode(13, OUTPUT);
 			for (int i=0; i<10; i++) {
 				my_io.digitalWrite(13, HIGH);
 				cout << i << ") Pin 13 -> HIGH" << endl;

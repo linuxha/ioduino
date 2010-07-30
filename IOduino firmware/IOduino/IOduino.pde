@@ -1,5 +1,5 @@
 /*  IOduino.pde-This IOduino firmware allows easy control of an Arduino's 
-                digital/analog input and output from a serial connection
+ digital/analog input and output from a serial connection
  *  ----------------------------------------------------------------------
  *  Copyright (C) 2010  Harry Eakins
  *
@@ -20,7 +20,7 @@
  *  Email: harry (dot) eakins (at) googlemail (dot) com
  *  Date Modified: 14:35 29/07/2010
  */
- 
+
 enum {
   START,
   UNEXPECTED_CHAR,
@@ -39,6 +39,7 @@ state;
 void setup() {
   state = START;
   Serial.begin(38400);
+  digitalWrite(13, HIGH);
 }
 
 int data1, data2;
@@ -182,6 +183,7 @@ void loop() {
     while (state == UNEXPECTED_CHAR);
   }
 }
+
 
 
 

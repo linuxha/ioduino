@@ -28,6 +28,11 @@
 #include <string>
 #include <sstream>
 #include <exception>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <stdlib.h>
 
 #define BAUD_RATE LibSerial::SerialStreamBuf::BAUD_38400
 
@@ -41,14 +46,98 @@ const bool LOW = false;
 class IOduino {
 		
 public:
+	//!The default constructor
+	/*!
+		When the default constructor is called, /dev/ttyUSB[0->9] are
+		searched for IOduinos and the first one found is connected to.
+		It can take up to 2 seconds for the constructor to finish being 
+		called. This is often the case if the arduino has just been
+		plugged in and is reset when the serial port is accessed for 
+		the first time.
+		Throws an IOduino_exception if none found.
+	*/ 
 	IOduino();
+
+	//!Alternative constructor
+	/*! 
+		Used when you need to specify the filename explicitly. Throws
+		an IOduino_exception if not found in that location.
+	*/
 	explicit IOduino(std::string filename);
+
+	//! Checks if connected to an IOduino
 	bool isConnected() const;
 
+	//! Sets an IOduino pin to either OUTPUT or INPUT
+	/*!
+		\param pin must be between 0 and 19 inclusive
+		\param state is either OUTPUT or INPUT
+
+		Throws IOduino_exception if pin is out of range or if IOduino 
+		doesn't respond.
+	*/
 	void pinMode(IOduino_pin pin, bool state);
+
+	//! Sets an IOduino pin to either HIGH or LOW
+	/*!
+		\param pin must be between 0 and 19 inclusive
+		\param state is either HIGH or LOW
+
+		If the pin has been configured as an OUTPUT with pinMode(), 
+		its voltage will be set to the corresponding value: 5V for 
+		HIGH, 0V (ground) for LOW.
+
+		If the pin is configured as an INPUT, writing a HIGH value 
+		with digitalWrite() will enable an internal 20K pullup resistor.
+		Writing LOW will disable the pullup.		
+
+		Throws IOduino_exception if pin is out of range or if IOduino 
+		doesn't respond.
+	*/
 	void digitalWrite(IOduino_pin pin, bool state);
+
+	//! Reads the value from a specified digital pin, either HIGH  or LOW.
+	/*!
+		\param pin must be between 0 and 19 inclusive
+		\param state is either HIGH or LOW
+
+		Returns HIGH or LOW
+
+		Throws IOduino_exception if pin is out of range or if IOduino 
+		doesn't respond.
+	*/
 	bool digitalRead(IOduino_pin pin); 
+
+	//! Writes an analog value (PWM wave) to a pin.
+	/*!
+		\param pin must be 3, 5, 6, 9, 10, or 11
+		\param is the duty cycle: between 0 (always off) and 255 (always on). 
+
+		Writes an analog value (PWM wave) to a pin. Can be used to light a 
+		LED at varying brightnesses or drive a motor at various speeds. 
+		After a call to analogWrite(), the pin will generate a steady square 
+		wave of the specified duty cycle until the next call to analogWrite() 
+		(or a call to digitalRead()  or digitalWrite() on the same pin). The 
+		frequency of the PWM signal is approximately 490 Hz.
+
+		Throws IOduino_exception if pin is out of range or if IOduino 
+		doesn't respond.
+	*/ 
 	void analogWrite(IOduino_pin pin, int value);
+
+	//! Reads the value from the specified analog pin.
+	/*!
+		\param pin must be between 0 and 5 inclusive
+
+		The Arduino board contains a 6 channel, 10-bit analog to digital 
+		converter. This means that it will map input voltages between 0 and 
+		5 volts into integer values between 0 and 1023. This yields a 
+		resolution between readings of: 5 volts / 1024 units or, .0049 volts 
+		(4.9 mV) per unit.
+
+		Throws IOduino_exception if pin is out of range or if IOduino 
+		doesn't respond.
+	*/
 	int analogRead(IOduino_pin pin);
 private:
 	void init(std::string filename);
@@ -102,6 +191,23 @@ bool IOduino::ConnectToArduino(std::string filename) {
 		IOduino_stream.SetNumOfStopBits(1);
 		IOduino_stream.SetParity(LibSerial::SerialStreamBuf::PARITY_NONE);
 		IOduino_stream.SetFlowControl(LibSerial::SerialStreamBuf::FLOW_CONTROL_NONE);
+
+		pid_t pID = fork();
+		if(pID == 0) { // Child
+			IOduino_stream << 'v'; // Verify it is an Arduino with the IOduino firmware
+				       // It should respond with an 'i'
+			char response;
+			IOduino_stream >> response;
+			exit(1);
+		} else {
+			int child_status;
+			int counter = 0;
+			while(waitpid(pID, &child_status, WNOHANG) == 0 && counter < 20) {
+				usleep(100*1000); // 100ms
+				counter++;
+			}
+			kill(pID, SIGKILL);
+		}
 
 		IOduino_stream << 'v'; // Verify it is an Arduino with the IOduino firmware
 				       // It should respond with an 'i'

@@ -1,0 +1,125 @@
+\hypertarget{classIOduino}{
+\section{IOduino Class Reference}
+\label{classIOduino}\index{IOduino@{IOduino}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classIOduino_ab4ccbd526cd336d5c5fc53f361ef3dd2}{IOduino} ()
+\begin{DoxyCompactList}\small\item\em The default constructor. \item\end{DoxyCompactList}\item 
+\hyperlink{classIOduino_aa7454913efdbd714680459a612f9f440}{IOduino} (std::string filename)
+\begin{DoxyCompactList}\small\item\em Alternative constructor. \item\end{DoxyCompactList}\item 
+\hypertarget{classIOduino_a047d32f2e8d8fd6cfc9cf6f8dd062b26}{
+bool \hyperlink{classIOduino_a047d32f2e8d8fd6cfc9cf6f8dd062b26}{isConnected} () const }
+\label{classIOduino_a047d32f2e8d8fd6cfc9cf6f8dd062b26}
+
+\begin{DoxyCompactList}\small\item\em Checks if connected to an \hyperlink{classIOduino}{IOduino}. \item\end{DoxyCompactList}\item 
+void \hyperlink{classIOduino_a93d15fb0da35a535f8010c1123be2c2c}{pinMode} (IOduino\_\-pin pin, bool state)
+\begin{DoxyCompactList}\small\item\em Sets an \hyperlink{classIOduino}{IOduino} pin to either OUTPUT or INPUT. \item\end{DoxyCompactList}\item 
+void \hyperlink{classIOduino_ab24475bba0e8ddea4257a561a3b21263}{digitalWrite} (IOduino\_\-pin pin, bool state)
+\begin{DoxyCompactList}\small\item\em Sets an \hyperlink{classIOduino}{IOduino} pin to either HIGH or LOW. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classIOduino_afb5c2f8e8ac382964debda0b4a86cd00}{digitalRead} (IOduino\_\-pin pin)
+\begin{DoxyCompactList}\small\item\em Reads the value from a specified digital pin, either HIGH or LOW. \item\end{DoxyCompactList}\item 
+void \hyperlink{classIOduino_a8fc8b7253bb8c4e7a339997221ce3522}{analogWrite} (IOduino\_\-pin pin, int value)
+\begin{DoxyCompactList}\small\item\em Writes an analog value (PWM wave) to a pin. \item\end{DoxyCompactList}\item 
+int \hyperlink{classIOduino_a6dc01079f940a16884f4fd0cc29f8406}{analogRead} (IOduino\_\-pin pin)
+\begin{DoxyCompactList}\small\item\em Reads the value from the specified analog pin. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classIOduino_ab4ccbd526cd336d5c5fc53f361ef3dd2}{
+\index{IOduino@{IOduino}!IOduino@{IOduino}}
+\index{IOduino@{IOduino}!IOduino@{IOduino}}
+\subsubsection[{IOduino}]{\setlength{\rightskip}{0pt plus 5cm}IOduino::IOduino ()}}
+\label{classIOduino_ab4ccbd526cd336d5c5fc53f361ef3dd2}
+
+
+The default constructor. 
+
+When the default constructor is called, /dev/ttyUSB\mbox{[}0-\/$>$9\mbox{]} are searched for IOduinos and the first one found is connected to. Throws an \hyperlink{classIOduino__exception}{IOduino\_\-exception} if none found. \hypertarget{classIOduino_aa7454913efdbd714680459a612f9f440}{
+\index{IOduino@{IOduino}!IOduino@{IOduino}}
+\index{IOduino@{IOduino}!IOduino@{IOduino}}
+\subsubsection[{IOduino}]{\setlength{\rightskip}{0pt plus 5cm}IOduino::IOduino (std::string {\em filename})\hspace{0.3cm}{\ttfamily  \mbox{[}explicit\mbox{]}}}}
+\label{classIOduino_aa7454913efdbd714680459a612f9f440}
+
+
+Alternative constructor. 
+
+Used when you need to specify the filename explicitly. Throws an \hyperlink{classIOduino__exception}{IOduino\_\-exception} if not found in that location. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classIOduino_a6dc01079f940a16884f4fd0cc29f8406}{
+\index{IOduino@{IOduino}!analogRead@{analogRead}}
+\index{analogRead@{analogRead}!IOduino@{IOduino}}
+\subsubsection[{analogRead}]{\setlength{\rightskip}{0pt plus 5cm}int IOduino::analogRead (IOduino\_\-pin {\em pin})}}
+\label{classIOduino_a6dc01079f940a16884f4fd0cc29f8406}
+
+
+Reads the value from the specified analog pin. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em pin}]must be between 0 and 5 inclusive\end{DoxyParams}
+The Arduino board contains a 6 channel, 10-\/bit analog to digital converter. This means that it will map input voltages between 0 and 5 volts into integer values between 0 and 1023. This yields a resolution between readings of: 5 volts / 1024 units or, .0049 volts (4.9 mV) per unit..
+
+Throws \hyperlink{classIOduino__exception}{IOduino\_\-exception} if pin is out of range or if \hyperlink{classIOduino}{IOduino} doesn't respond. \hypertarget{classIOduino_a8fc8b7253bb8c4e7a339997221ce3522}{
+\index{IOduino@{IOduino}!analogWrite@{analogWrite}}
+\index{analogWrite@{analogWrite}!IOduino@{IOduino}}
+\subsubsection[{analogWrite}]{\setlength{\rightskip}{0pt plus 5cm}void IOduino::analogWrite (IOduino\_\-pin {\em pin}, \/  int {\em value})}}
+\label{classIOduino_a8fc8b7253bb8c4e7a339997221ce3522}
+
+
+Writes an analog value (PWM wave) to a pin. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em pin}]must be 3, 5, 6, 9, 10, or 11 \item[{\em is}]the duty cycle: between 0 (always off) and 255 (always on).\end{DoxyParams}
+Writes an analog value (PWM wave) to a pin. Can be used to light a LED at varying brightnesses or drive a motor at various speeds. After a call to \hyperlink{classIOduino_a8fc8b7253bb8c4e7a339997221ce3522}{analogWrite()}, the pin will generate a steady square wave of the specified duty cycle until the next call to \hyperlink{classIOduino_a8fc8b7253bb8c4e7a339997221ce3522}{analogWrite()} (or a call to \hyperlink{classIOduino_afb5c2f8e8ac382964debda0b4a86cd00}{digitalRead()} or \hyperlink{classIOduino_ab24475bba0e8ddea4257a561a3b21263}{digitalWrite()} on the same pin). The frequency of the PWM signal is approximately 490 Hz.
+
+Throws \hyperlink{classIOduino__exception}{IOduino\_\-exception} if pin is out of range or if \hyperlink{classIOduino}{IOduino} doesn't respond. \hypertarget{classIOduino_afb5c2f8e8ac382964debda0b4a86cd00}{
+\index{IOduino@{IOduino}!digitalRead@{digitalRead}}
+\index{digitalRead@{digitalRead}!IOduino@{IOduino}}
+\subsubsection[{digitalRead}]{\setlength{\rightskip}{0pt plus 5cm}bool IOduino::digitalRead (IOduino\_\-pin {\em pin})}}
+\label{classIOduino_afb5c2f8e8ac382964debda0b4a86cd00}
+
+
+Reads the value from a specified digital pin, either HIGH or LOW. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em pin}]must be between 0 and 19 inclusive \item[{\em state}]is either HIGH or LOW\end{DoxyParams}
+Returns HIGH or LOW
+
+Throws \hyperlink{classIOduino__exception}{IOduino\_\-exception} if pin is out of range or if \hyperlink{classIOduino}{IOduino} doesn't respond. \hypertarget{classIOduino_ab24475bba0e8ddea4257a561a3b21263}{
+\index{IOduino@{IOduino}!digitalWrite@{digitalWrite}}
+\index{digitalWrite@{digitalWrite}!IOduino@{IOduino}}
+\subsubsection[{digitalWrite}]{\setlength{\rightskip}{0pt plus 5cm}void IOduino::digitalWrite (IOduino\_\-pin {\em pin}, \/  bool {\em state})}}
+\label{classIOduino_ab24475bba0e8ddea4257a561a3b21263}
+
+
+Sets an \hyperlink{classIOduino}{IOduino} pin to either HIGH or LOW. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em pin}]must be between 0 and 19 inclusive \item[{\em state}]is either HIGH or LOW\end{DoxyParams}
+If the pin has been configured as an OUTPUT with \hyperlink{classIOduino_a93d15fb0da35a535f8010c1123be2c2c}{pinMode()}, its voltage will be set to the corresponding value: 5V for HIGH, 0V (ground) for LOW.
+
+If the pin is configured as an INPUT, writing a HIGH value with \hyperlink{classIOduino_ab24475bba0e8ddea4257a561a3b21263}{digitalWrite()} will enable an internal 20K pullup resistor. Writing LOW will disable the pullup.
+
+Throws \hyperlink{classIOduino__exception}{IOduino\_\-exception} if pin is out of range or if \hyperlink{classIOduino}{IOduino} doesn't respond. \hypertarget{classIOduino_a93d15fb0da35a535f8010c1123be2c2c}{
+\index{IOduino@{IOduino}!pinMode@{pinMode}}
+\index{pinMode@{pinMode}!IOduino@{IOduino}}
+\subsubsection[{pinMode}]{\setlength{\rightskip}{0pt plus 5cm}void IOduino::pinMode (IOduino\_\-pin {\em pin}, \/  bool {\em state})}}
+\label{classIOduino_a93d15fb0da35a535f8010c1123be2c2c}
+
+
+Sets an \hyperlink{classIOduino}{IOduino} pin to either OUTPUT or INPUT. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em pin}]must be between 0 and 19 inclusive \item[{\em state}]is either OUTPUT or INPUT\end{DoxyParams}
+Throws \hyperlink{classIOduino__exception}{IOduino\_\-exception} if pin is out of range or if \hyperlink{classIOduino}{IOduino} doesn't respond. 
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+ioduino.h\end{DoxyCompactItemize}
